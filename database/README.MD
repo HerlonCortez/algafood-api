@@ -4,6 +4,6 @@ Abaixo estão os comandos necessários para rodar:
 
 - É necessário ter o Docker instalado na máquina desejada
 - `docker build . -t algafood`
-- `docker run -p 5432:5432 -e POSTGRES_PASSWORD="dev123456" --name=algafood alga-food`
+- `docker run -p 5432:5432 -e POSTGRES_PASSWORD="dev123456" --name=algafood algafood`
 
 > Written with [StackEdit](https://stackedit.io/).
