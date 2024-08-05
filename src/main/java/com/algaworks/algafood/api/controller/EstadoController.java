@@ -38,13 +38,18 @@ public class EstadoController {
 		return estadoRepository.findAll();
 	}
 	
+//	@GetMapping("/{estadoId}")
+//	public ResponseEntity<Estado> buscar(@PathVariable Long estadoId){
+//		Optional<Estado> estado = estadoRepository.findById(estadoId);
+//		if (estado.isPresent()) {
+//			return ResponseEntity.ok().body(estado.get());
+//		}
+//		return ResponseEntity.notFound().build();
+//	}
+	
 	@GetMapping("/{estadoId}")
-	public ResponseEntity<Estado> buscar(@PathVariable Long estadoId){
-		Optional<Estado> estado = estadoRepository.findById(estadoId);
-		if (estado.isPresent()) {
-			return ResponseEntity.ok().body(estado.get());
-		}
-		return ResponseEntity.notFound().build();
+	public Estado buscar(@PathVariable Long estadoId){
+		return cadastroEstadoService.buscar(estadoId);
 	}
 	
 	@PostMapping
@@ -53,26 +58,39 @@ public class EstadoController {
 		return cadastroEstadoService.salvar(estado);
 	}
 	
+//	@PutMapping("/{estadoId}")
+//	public ResponseEntity<Estado> alterar(@PathVariable Long estadoId, @RequestBody Estado estado){
+//		Optional<Estado> estadoAtual = estadoRepository.findById(estadoId);
+//		if (estadoAtual.isPresent()) {
+//			BeanUtils.copyProperties(estado, estadoAtual,"id");
+//			Estado estadoSalvo = cadastroEstadoService.salvar(estadoAtual.get());
+//			return ResponseEntity.ok().body(estadoSalvo);
+//		}
+//		return ResponseEntity.notFound().build();
+//	}
+	
 	@PutMapping("/{estadoId}")
-	public ResponseEntity<Estado> alterar(@PathVariable Long estadoId, @RequestBody Estado estado){
-		Optional<Estado> estadoAtual = estadoRepository.findById(estadoId);
-		if (estadoAtual.isPresent()) {
-			BeanUtils.copyProperties(estado, estadoAtual,"id");
-			Estado estadoSalvo = cadastroEstadoService.salvar(estadoAtual.get());
-			return ResponseEntity.ok().body(estadoSalvo);
-		}
-		return ResponseEntity.notFound().build();
+	public Estado alterar(@PathVariable Long estadoId, @RequestBody Estado estado){
+		Estado estadoAtual = cadastroEstadoService.buscar(estadoId);
+		BeanUtils.copyProperties(estado, estadoAtual,"id");
+		return cadastroEstadoService.salvar(estadoAtual);
 	}
 	
+//	@DeleteMapping("/{estadoId}")
+//	public ResponseEntity<Estado> remover(@PathVariable Long estadoId){
+//		try {
+//			cadastroEstadoService.remove(estadoId);
+//			return ResponseEntity.noContent().build();
+//		} catch (EntidadeNaoEncontradaException e) {
+//			return ResponseEntity.notFound().build();
+//		} catch (EntidadeEmUsoException e) {
+//			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+//		}
+//	}
+	
 	@DeleteMapping("/{estadoId}")
-	public ResponseEntity<Estado> remover(@PathVariable Long estadoId){
-		try {
-			cadastroEstadoService.remove(estadoId);
-			return ResponseEntity.noContent().build();
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
-		} catch (EntidadeEmUsoException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
-		}
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void remover(@PathVariable Long estadoId){
+		cadastroEstadoService.remove(estadoId);
 	}
 }
