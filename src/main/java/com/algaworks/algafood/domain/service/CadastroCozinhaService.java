@@ -1,17 +1,12 @@
 package com.algaworks.algafood.domain.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.server.ResponseStatusException;
 
+import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 
@@ -19,8 +14,6 @@ import com.algaworks.algafood.domain.repository.CozinhaRepository;
 public class CadastroCozinhaService {
 
 	private static final String MSG_COZINHA_EM_USO = "Cozinha de código %d não pode ser romovida, pois está em uso ";
-
-	private static final String MSG_COZINHA_NAO_ENCONTRADA = "Não existe um código de cozinha com o código %d";
 	
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
@@ -41,6 +34,6 @@ public class CadastroCozinhaService {
 	
 	public Cozinha buscar(@PathVariable Long cozinhaId) {
 		return cozinhaRepository.findById(cozinhaId)
-				.orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId)));
+				.orElseThrow(() -> new CozinhaNaoEncontradaException(cozinhaId));
 	}
 }
