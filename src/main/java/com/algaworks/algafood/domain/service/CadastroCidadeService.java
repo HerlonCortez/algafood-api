@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
+import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 
 @Service
@@ -18,10 +19,18 @@ public class CadastroCidadeService {
 
 	private static final String MSG_CIDADE_EM_USO = "Cidade de código %d não pode ser romovida, pois está em uso ";
 	private static final String MSG_CIDADE_NAO_ENCONTRADA = "Não existe um código de cidade com o código %d";
+	
 	@Autowired
 	private CidadeRepository cidadeRepository;
 	
+	@Autowired
+	private CadastroEstadoService cadastroEstadoService;
+	
 	public Cidade salvar(Cidade cidade) {
+		Long estadoId = cidade.getEstado().getId();
+		
+		cidade.setEstado(cadastroEstadoService.buscar(estadoId));
+		
 		return cidadeRepository.save(cidade);
 	}
 	
