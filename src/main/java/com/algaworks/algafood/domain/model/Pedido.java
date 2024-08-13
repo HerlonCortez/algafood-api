@@ -23,41 +23,41 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class Pedido {
 
-	@EqualsAndHashCode.Include
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Id
-	private Long id;
+    @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    private Long id;
 
-	@CreationTimestamp
-	private LocalDateTime dataCriacao;
+    @CreationTimestamp
+    private LocalDateTime dataCriacao;
 
-	private LocalDateTime dataConfirmacao;
-	private LocalDateTime dataCancelamento;
-	private LocalDateTime dataEntrega;
+    private LocalDateTime dataConfirmacao;
+    private LocalDateTime dataCancelamento;
+    private LocalDateTime dataEntrega;
 
-	private BigDecimal subtotal;
+    private BigDecimal subtotal;
 
-	private BigDecimal taxaFrete;
+    private BigDecimal taxaFrete;
 
-	private BigDecimal valorTotal;
+    private BigDecimal valorTotal;
 
-	@OneToMany(mappedBy = "pedido")
-	private List<ItemPedido> itensPedido = new ArrayList<>();
+    @OneToMany(mappedBy = "pedido")
+    private List<ItemPedido> itensPedido = new ArrayList<>();
 
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private FormaPagamento formaPagamento;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private FormaPagamento formaPagamento;
 
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Restaurante restaurante;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Restaurante restaurante;
 
-	@ManyToOne
-	@JoinColumn(name = "usuario_cliente_id", nullable = false)
-	private Usuario cliente;
+    @ManyToOne
+    @JoinColumn(name = "usuario_cliente_id", nullable = false)
+    private Usuario cliente;
 
-	@Embedded
-	private Endereco enderecoEntrega;
+    @Embedded
+    private Endereco enderecoEntrega;
 
-	private StatusPedido pedido;
+    private StatusPedido pedido;
 }

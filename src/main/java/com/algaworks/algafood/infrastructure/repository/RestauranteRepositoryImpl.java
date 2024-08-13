@@ -25,16 +25,17 @@ import jakarta.persistence.criteria.Root;
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 
-	@PersistenceContext
-	private EntityManager manager;
-	
-	@Autowired @Lazy
-	RestauranteRepository restauranteRepository;
-	
-	@Override
-	public List<Restaurante> find(String nome, 
-			BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
-		
+    @PersistenceContext
+    private EntityManager manager;
+
+    @Autowired
+    @Lazy
+    RestauranteRepository restauranteRepository;
+
+    @Override
+    public List<Restaurante> find(String nome,
+                                  BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
+
 //		var jpql = new StringBuilder();
 //		
 //		jpql.append("from Restaurante where 0 = 0 ");
@@ -61,35 +62,34 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 //		parametros.forEach((chave, valor) -> query.setParameter(chave, valor));
 //		
 //		return query.getResultList();
-		
-		CriteriaBuilder builder = manager.getCriteriaBuilder();
-		
-		CriteriaQuery<Restaurante> criteriaQuery = builder.createQuery(Restaurante.class);
-		
-		Root<Restaurante> root = criteriaQuery.from(Restaurante.class);
-		
-		var predicates = new ArrayList<Predicate>();
-		
-		if (nome != null) {
-			predicates.add(builder.like(root.get("nome"), "%" + nome + "%"));
-		}
-		if (taxaFreteInicial != null) {
-			predicates.add(builder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteInicial));
-		}
-		if (taxaFreteFinal != null) {
-			predicates.add(builder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal));
-		}
-		
-		
-	
-		criteriaQuery.where(predicates.toArray(new Predicate[0]));
-		
-		return manager.createQuery(criteriaQuery).getResultList();
-		
-	}
 
-	@Override
-	public List<Restaurante> findFreteGratis(String nome) {
-		return restauranteRepository.findAll(freteGratis().and(nomeSemelhante(nome)));
-	}
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
+
+        CriteriaQuery<Restaurante> criteriaQuery = builder.createQuery(Restaurante.class);
+
+        Root<Restaurante> root = criteriaQuery.from(Restaurante.class);
+
+        var predicates = new ArrayList<Predicate>();
+
+        if (nome != null) {
+            predicates.add(builder.like(root.get("nome"), "%" + nome + "%"));
+        }
+        if (taxaFreteInicial != null) {
+            predicates.add(builder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteInicial));
+        }
+        if (taxaFreteFinal != null) {
+            predicates.add(builder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal));
+        }
+
+
+        criteriaQuery.where(predicates.toArray(new Predicate[0]));
+
+        return manager.createQuery(criteriaQuery).getResultList();
+
+    }
+
+    @Override
+    public List<Restaurante> findFreteGratis(String nome) {
+        return restauranteRepository.findAll(freteGratis().and(nomeSemelhante(nome)));
+    }
 }

@@ -14,36 +14,36 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 @Service
 public class CadastroRestauranteService {
 
-	private static final String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d não pode ser romovido, pois está em uso";
+    private static final String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d não pode ser romovido, pois está em uso";
 
-	@Autowired
-	private RestauranteRepository restauranteRepository;
-	
-	
-	@Autowired
-	private CadastroCozinhaService cadastroCozinhaService;
-	
-	public Restaurante salvar(Restaurante restaurante) {
-		Long cozinhaId = restaurante.getCozinha().getId();
-		
-		Cozinha cozinha = cadastroCozinhaService.buscar(cozinhaId);
-		
-		restaurante.setCozinha(cozinha);
-		
-		return restauranteRepository.save(restaurante);
-	}
-	
-	public void remover(Long restauranteId) {
-		try {
-			buscar(restauranteId);
-			restauranteRepository.deleteById(restauranteId);
-		}catch (DataIntegrityViolationException e) {
-			throw new EntidadeEmUsoException(String.format(MSG_RESTAURANTE_EM_USO, restauranteId));
-		}
-	}
-	
-	public Restaurante buscar(@PathVariable Long restauranteId) {
-		return restauranteRepository.findById(restauranteId)
-				.orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
-	}
+    @Autowired
+    private RestauranteRepository restauranteRepository;
+
+
+    @Autowired
+    private CadastroCozinhaService cadastroCozinhaService;
+
+    public Restaurante salvar(Restaurante restaurante) {
+        Long cozinhaId = restaurante.getCozinha().getId();
+
+        Cozinha cozinha = cadastroCozinhaService.buscar(cozinhaId);
+
+        restaurante.setCozinha(cozinha);
+
+        return restauranteRepository.save(restaurante);
+    }
+
+    public void remover(Long restauranteId) {
+        try {
+            buscar(restauranteId);
+            restauranteRepository.deleteById(restauranteId);
+        } catch (DataIntegrityViolationException e) {
+            throw new EntidadeEmUsoException(String.format(MSG_RESTAURANTE_EM_USO, restauranteId));
+        }
+    }
+
+    public Restaurante buscar(@PathVariable Long restauranteId) {
+        return restauranteRepository.findById(restauranteId)
+                .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
+    }
 }

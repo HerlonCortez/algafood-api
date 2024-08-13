@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import com.algaworks.algafood.domain.model.Cozinha;
 
 @Repository
-public interface CozinhaRepository extends JpaRepository<Cozinha, Long>{
-	
-	List<Cozinha> findByNome(String nome);
-	
-	List<Cozinha> findByNomeContaining(String nome);
-	
+public interface CozinhaRepository extends JpaRepository<Cozinha, Long> {
+
+    List<Cozinha> findByNome(String nome);
+
+    List<Cozinha> findByNomeContaining(String nome);
+
 }

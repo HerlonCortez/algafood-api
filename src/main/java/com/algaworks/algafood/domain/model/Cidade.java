@@ -13,13 +13,13 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class Cidade {
 
-	@EqualsAndHashCode.Include
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	private String nome;
-	
-	@ManyToOne
-	private Estado estado;
+    @EqualsAndHashCode.Include
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String nome;
+
+    @ManyToOne
+    private Estado estado;
 }

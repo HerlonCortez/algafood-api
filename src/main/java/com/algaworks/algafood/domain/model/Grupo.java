@@ -18,12 +18,12 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class Grupo {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	private String nome;
-	@ManyToMany
-	@JoinTable(name = "grupo_permissoes", joinColumns = @JoinColumn(name = "grupo_id"), inverseJoinColumns = @JoinColumn(name="perimssao_id"))
-	private List<Permissao> permissoes = new ArrayList<>();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String nome;
+    @ManyToMany
+    @JoinTable(name = "grupo_permissoes", joinColumns = @JoinColumn(name = "grupo_id"), inverseJoinColumns = @JoinColumn(name = "perimssao_id"))
+    private List<Permissao> permissoes = new ArrayList<>();
 }

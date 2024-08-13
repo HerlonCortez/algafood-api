@@ -13,33 +13,33 @@ import com.algaworks.algafood.domain.repository.CidadeRepository;
 @Service
 public class CadastroCidadeService {
 
-	private static final String MSG_CIDADE_EM_USO = "Cidade de código %d não pode ser romovida, pois está em uso ";
-	
-	@Autowired
-	private CidadeRepository cidadeRepository;
-	
-	@Autowired
-	private CadastroEstadoService cadastroEstadoService;
-	
-	public Cidade salvar(Cidade cidade) {
-		Long estadoId = cidade.getEstado().getId();
-		
-		cidade.setEstado(cadastroEstadoService.buscar(estadoId));
-		
-		return cidadeRepository.save(cidade);
-	}
-	
-	public void remover(Long cidadeId) {
-		try {
-			buscar(cidadeId);
-			cidadeRepository.deleteById(cidadeId);
-		}catch (DataIntegrityViolationException e) {
-			throw new EntidadeEmUsoException(String.format(MSG_CIDADE_EM_USO, cidadeId));
-		}
-	}
-	
-	public Cidade buscar(@PathVariable Long cidadeId) {
-		return cidadeRepository.findById(cidadeId)
-				.orElseThrow(() -> new CidadeNaoEncontradaException(cidadeId));
-	}
+    private static final String MSG_CIDADE_EM_USO = "Cidade de código %d não pode ser romovida, pois está em uso ";
+
+    @Autowired
+    private CidadeRepository cidadeRepository;
+
+    @Autowired
+    private CadastroEstadoService cadastroEstadoService;
+
+    public Cidade salvar(Cidade cidade) {
+        Long estadoId = cidade.getEstado().getId();
+
+        cidade.setEstado(cadastroEstadoService.buscar(estadoId));
+
+        return cidadeRepository.save(cidade);
+    }
+
+    public void remover(Long cidadeId) {
+        try {
+            buscar(cidadeId);
+            cidadeRepository.deleteById(cidadeId);
+        } catch (DataIntegrityViolationException e) {
+            throw new EntidadeEmUsoException(String.format(MSG_CIDADE_EM_USO, cidadeId));
+        }
+    }
+
+    public Cidade buscar(@PathVariable Long cidadeId) {
+        return cidadeRepository.findById(cidadeId)
+                .orElseThrow(() -> new CidadeNaoEncontradaException(cidadeId));
+    }
 }

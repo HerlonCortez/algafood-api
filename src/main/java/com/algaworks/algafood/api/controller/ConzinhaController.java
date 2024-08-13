@@ -24,25 +24,25 @@ import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 @RequestMapping("/cozinhas")
 public class ConzinhaController {
 
-	@Autowired
-	private CozinhaRepository cozinhaRepository;
-	@Autowired
-	private CadastroCozinhaService cadastroCozinhaService;
+    @Autowired
+    private CozinhaRepository cozinhaRepository;
+    @Autowired
+    private CadastroCozinhaService cadastroCozinhaService;
 
-	@GetMapping
-	public List<Cozinha> listar() {
-		return cozinhaRepository.findAll();
-	}
-	
-	@GetMapping("/nome")
-	public List<Cozinha> consultar(@RequestParam String nome) {
-		return cozinhaRepository.findByNome(nome);
-	}
-	
-	@GetMapping("/parcial")
-	public List<Cozinha> consultarNomeParcial(@RequestParam String nome) {
-		return cozinhaRepository.findByNomeContaining(nome);
-	}
+    @GetMapping
+    public List<Cozinha> listar() {
+        return cozinhaRepository.findAll();
+    }
+
+    @GetMapping("/nome")
+    public List<Cozinha> consultar(@RequestParam String nome) {
+        return cozinhaRepository.findByNome(nome);
+    }
+
+    @GetMapping("/parcial")
+    public List<Cozinha> consultarNomeParcial(@RequestParam String nome) {
+        return cozinhaRepository.findByNomeContaining(nome);
+    }
 
 //	@GetMapping("/{cozinhaId}")
 //	public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
@@ -54,17 +54,17 @@ public class ConzinhaController {
 //
 //		return ResponseEntity.notFound().build();
 //	}
-	
-	@GetMapping("/{cozinhaId}")
-	public Cozinha buscar(@PathVariable Long cozinhaId) {
-		return cadastroCozinhaService.buscar(cozinhaId);
-	}
 
-	@PostMapping
-	@ResponseStatus(value = HttpStatus.CREATED)
-	public void adicionar(@RequestBody Cozinha cozinha) {
-		cadastroCozinhaService.salvar(cozinha);
-	}
+    @GetMapping("/{cozinhaId}")
+    public Cozinha buscar(@PathVariable Long cozinhaId) {
+        return cadastroCozinhaService.buscar(cozinhaId);
+    }
+
+    @PostMapping
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public void adicionar(@RequestBody Cozinha cozinha) {
+        cadastroCozinhaService.salvar(cozinha);
+    }
 
 //	@PutMapping("/{cozinhaId}")
 //	public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha) {
@@ -76,14 +76,14 @@ public class ConzinhaController {
 //		}
 //		return ResponseEntity.notFound().build();
 //	}
-	
-	@PutMapping("/{cozinhaId}")
-	public Cozinha atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha) {
-		Cozinha cozinhaAtual = cadastroCozinhaService.buscar(cozinhaId);
-		
-			BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
-			return cadastroCozinhaService.salvar(cozinhaAtual);
-	}
+
+    @PutMapping("/{cozinhaId}")
+    public Cozinha atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha) {
+        Cozinha cozinhaAtual = cadastroCozinhaService.buscar(cozinhaId);
+
+        BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
+        return cadastroCozinhaService.salvar(cozinhaAtual);
+    }
 
 //	@DeleteMapping("/{cozinhaId}")
 //	public ResponseEntity<?> remover(@PathVariable Long cozinhaId) {
@@ -96,10 +96,10 @@ public class ConzinhaController {
 //			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 //		}
 //	}
-	
-	@DeleteMapping("/{cozinhaId}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long cozinhaId) {
-		cadastroCozinhaService.remover(cozinhaId);
-	}
+
+    @DeleteMapping("/{cozinhaId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long cozinhaId) {
+        cadastroCozinhaService.remover(cozinhaId);
+    }
 }

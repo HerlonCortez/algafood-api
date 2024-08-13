@@ -23,17 +23,17 @@ import com.algaworks.algafood.domain.service.CadastroEstadoService;
 @RequestMapping("/estados")
 public class EstadoController {
 
-	@Autowired
-	private EstadoRepository estadoRepository;
-	
-	@Autowired
-	private CadastroEstadoService cadastroEstadoService;
-	
-	@GetMapping
-	public List<Estado> listar() {
-		return estadoRepository.findAll();
-	}
-	
+    @Autowired
+    private EstadoRepository estadoRepository;
+
+    @Autowired
+    private CadastroEstadoService cadastroEstadoService;
+
+    @GetMapping
+    public List<Estado> listar() {
+        return estadoRepository.findAll();
+    }
+
 //	@GetMapping("/{estadoId}")
 //	public ResponseEntity<Estado> buscar(@PathVariable Long estadoId){
 //		Optional<Estado> estado = estadoRepository.findById(estadoId);
@@ -42,18 +42,18 @@ public class EstadoController {
 //		}
 //		return ResponseEntity.notFound().build();
 //	}
-	
-	@GetMapping("/{estadoId}")
-	public Estado buscar(@PathVariable Long estadoId){
-		return cadastroEstadoService.buscar(estadoId);
-	}
-	
-	@PostMapping
-	@ResponseStatus(value = HttpStatus.CREATED)
-	public Estado adiciona(@RequestBody Estado estado) {
-		return cadastroEstadoService.salvar(estado);
-	}
-	
+
+    @GetMapping("/{estadoId}")
+    public Estado buscar(@PathVariable Long estadoId) {
+        return cadastroEstadoService.buscar(estadoId);
+    }
+
+    @PostMapping
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public Estado adiciona(@RequestBody Estado estado) {
+        return cadastroEstadoService.salvar(estado);
+    }
+
 //	@PutMapping("/{estadoId}")
 //	public ResponseEntity<Estado> alterar(@PathVariable Long estadoId, @RequestBody Estado estado){
 //		Optional<Estado> estadoAtual = estadoRepository.findById(estadoId);
@@ -64,14 +64,14 @@ public class EstadoController {
 //		}
 //		return ResponseEntity.notFound().build();
 //	}
-	
-	@PutMapping("/{estadoId}")
-	public Estado alterar(@PathVariable Long estadoId, @RequestBody Estado estado){
-		Estado estadoAtual = cadastroEstadoService.buscar(estadoId);
-		BeanUtils.copyProperties(estado, estadoAtual,"id");
-		return cadastroEstadoService.salvar(estadoAtual);
-	}
-	
+
+    @PutMapping("/{estadoId}")
+    public Estado alterar(@PathVariable Long estadoId, @RequestBody Estado estado) {
+        Estado estadoAtual = cadastroEstadoService.buscar(estadoId);
+        BeanUtils.copyProperties(estado, estadoAtual, "id");
+        return cadastroEstadoService.salvar(estadoAtual);
+    }
+
 //	@DeleteMapping("/{estadoId}")
 //	public ResponseEntity<Estado> remover(@PathVariable Long estadoId){
 //		try {
@@ -83,10 +83,10 @@ public class EstadoController {
 //			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 //		}
 //	}
-	
-	@DeleteMapping("/{estadoId}")
-	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long estadoId){
-		cadastroEstadoService.remove(estadoId);
-	}
+
+    @DeleteMapping("/{estadoId}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long estadoId) {
+        cadastroEstadoService.remove(estadoId);
+    }
 }

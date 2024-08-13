@@ -19,25 +19,25 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class Cozinha {
 
-	@EqualsAndHashCode.Include
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	private String nome;
+    @EqualsAndHashCode.Include
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public Cozinha() {
-		
-	}
-	
-	public Cozinha(String nome) {
-		super();
-		this.nome = nome;
-	}
+    private String nome;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "cozinha")
-	private List<Restaurante> restaurantes = new ArrayList<>();
-	
-	
+    public Cozinha() {
+
+    }
+
+    public Cozinha(String nome) {
+        super();
+        this.nome = nome;
+    }
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "cozinha")
+    private List<Restaurante> restaurantes = new ArrayList<>();
+
+
 }
