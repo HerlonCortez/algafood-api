@@ -1,20 +1,33 @@
 package com.algaworks.algafood.api.exceptionhandler;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import com.fasterxml.jackson.databind.DatabindException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.flywaydb.core.internal.util.ExceptionUtils;
 import org.hibernate.PropertyValueException;
+import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.method.MethodValidationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
@@ -29,19 +42,6 @@ import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
-
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-
-        ProblemType problemType = ProblemType.DADOS_INVALIDOS;
-        String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
-
-        Problem problem = createProblemBuilder(status, problemType, detail)
-                .userMessage(detail)
-                .build();
-
-        return handleExceptionInternal(ex, problem, headers, status, request);
-    }
 
     @Override
     protected ResponseEntity<Object> handleNoResourceFoundException(NoResourceFoundException ex, HttpHeaders headers,
@@ -85,7 +85,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException e,
                                                                   HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Throwable rootCause = ExceptionUtils.getRootCause(e);
-        System.out.println(rootCause.getCause());
+
         if (rootCause instanceof InvalidFormatException) {
             return handleInvalidFormatException((InvalidFormatException) rootCause, headers, status, request);
         } else if (rootCause instanceof PropertyBindingException) {
@@ -107,7 +107,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 "A propriedade '%s' recebeu o valor '%s', que é do tipo inválido. "
                         + "Corrija e informe um valor compatível com o tipo %s",
                 path, e.getValue(), e.getTargetType().getSimpleName());
-
         ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
 
         Problem problem = createProblemBuilder(status, problemType, detail).build();
@@ -153,15 +152,26 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<?> handleNegocioException(DataIntegrityViolationException e, WebRequest request) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+    public ResponseEntity<?> handleConstraintViolationException(PropertyValueException ex, WebRequest request) {
         ProblemType problemType = ProblemType.DADOS_INVALIDOS;
         String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
-
-        Problem problem = createProblemBuilder(status, problemType, detail)
-                .userMessage(detail)
-                .build();
-        return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        Problem problem = createProblemBuilder(status, problemType, detail).build();
+        System.out.println(ex.getCause().toString());
+//        Set<ConstraintViolation<?>> violations = ex.getPropertyName();
+//
+//        List<Problem.Field> problemFields = violations.stream()
+//                .map(fieldError -> Problem.Field.builder()
+//                        .nome(fieldError.getPropertyPath().toString())
+//                        .userMessage(fieldError.getMessage())
+//                        .build())
+//                .collect(Collectors.toList());
+//
+//        Problem problem = createProblemBuilder(status, problemType, detail)
+//                .userMessage(detail)
+//                .fields(problemFields)
+//                .build();
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
     @ExceptionHandler(NegocioException.class)
