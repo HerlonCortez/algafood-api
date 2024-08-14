@@ -44,6 +44,27 @@ import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        ProblemType problemType = ProblemType.DADOS_INVALIDOS;
+        String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
+
+        BindingResult bindingResult = ex.getBindingResult();
+
+        List<Problem.Field> problemFields = bindingResult.getFieldErrors().stream()
+                .map(fieldError -> Problem.Field.builder()
+                        .nome(fieldError.getField())
+                        .userMessage(fieldError.getDefaultMessage())
+                        .build())
+                .collect(Collectors.toList());
+
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(detail)
+                .fields(problemFields)
+                .build();
+        return super.handleExceptionInternal(ex, problem, headers, status, request);
+    }
+
+    @Override
     protected ResponseEntity<Object> handleNoResourceFoundException(NoResourceFoundException ex, HttpHeaders headers,
                                                                     HttpStatusCode status, WebRequest request) {
         ProblemType problemType = ProblemType.PARAMETRO_INVALIDO;
@@ -149,29 +170,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         Problem problem = createProblemBuilder(status, problemType, detail).build();
 
         return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
-    }
-
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<?> handleConstraintViolationException(PropertyValueException ex, WebRequest request) {
-        ProblemType problemType = ProblemType.DADOS_INVALIDOS;
-        String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        Problem problem = createProblemBuilder(status, problemType, detail).build();
-        System.out.println(ex.getCause().toString());
-//        Set<ConstraintViolation<?>> violations = ex.getPropertyName();
-//
-//        List<Problem.Field> problemFields = violations.stream()
-//                .map(fieldError -> Problem.Field.builder()
-//                        .nome(fieldError.getPropertyPath().toString())
-//                        .userMessage(fieldError.getMessage())
-//                        .build())
-//                .collect(Collectors.toList());
-//
-//        Problem problem = createProblemBuilder(status, problemType, detail)
-//                .userMessage(detail)
-//                .fields(problemFields)
-//                .build();
-        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
     @ExceptionHandler(NegocioException.class)
