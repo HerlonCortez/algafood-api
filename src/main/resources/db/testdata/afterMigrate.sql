@@ -57,3 +57,15 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('San
 
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, true, 6);
 
+SELECT setval('public.cidade_id_seq', (SELECT MAX(id) FROM cidade));
+SELECT setval('public.cozinha_id_seq', (SELECT MAX(id) FROM cozinha));
+SELECT setval('public.estado_id_seq', (SELECT MAX(id) FROM estado));
+SELECT setval('public.restaurante_id_seq', (SELECT MAX(id) FROM restaurante));
+SELECT setval('public.grupo_id_seq', (SELECT MAX(id) FROM grupo));
+SELECT setval('public.forma_pagamento_id_seq', (SELECT MAX(id) FROM forma_pagamento));
+SELECT setval('public.pedido_id_seq', (SELECT MAX(id) FROM pedido));
+SELECT setval('public.item_pedido_id_seq', (SELECT MAX(id) FROM item_pedido));
+SELECT setval('public.permissao_id_seq', (SELECT MAX(id) FROM permissao));
+SELECT setval('public.produto_id_seq', (SELECT MAX(id) FROM produto));
+SELECT setval('public.usuario_id_seq', (SELECT MAX(id) FROM usuario));
+

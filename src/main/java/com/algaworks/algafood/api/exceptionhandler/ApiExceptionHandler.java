@@ -13,7 +13,10 @@ import org.flywaydb.core.internal.util.ExceptionUtils;
 import org.hibernate.PropertyValueException;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.bind.BindResult;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -43,6 +46,13 @@ import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
+    public static final String MSG_ERRO_GENERICA_USUARIO_FINAL
+            = "Ocorreu um erro interno inesperado no sistema. Tente novamente e se "
+            + "o problema persistir, entre em contato com o administrador do sistema.";
+
+    @Autowired
+    private MessageSource messageSource;
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         ProblemType problemType = ProblemType.DADOS_INVALIDOS;
@@ -51,10 +61,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         BindingResult bindingResult = ex.getBindingResult();
 
         List<Problem.Field> problemFields = bindingResult.getFieldErrors().stream()
-                .map(fieldError -> Problem.Field.builder()
-                        .nome(fieldError.getField())
-                        .userMessage(fieldError.getDefaultMessage())
-                        .build())
+                .map(fieldError -> {
+                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+
+                    return Problem.Field.builder()
+                            .nome(fieldError.getField())
+                            .userMessage(message)
+                            .build();
+                })
                 .collect(Collectors.toList());
 
         Problem problem = createProblemBuilder(status, problemType, detail)
@@ -97,7 +111,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemType problemType = ProblemType.PARAMETRO_INVALIDO;
 
-        Problem problem = createProblemBuilder(status, problemType, detail).build();
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
+                .build();
 
         return handleExceptionInternal(e, problem, headers, status, request);
     }
@@ -116,7 +132,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
         String detail = "O corpo da requisição está inválido. Verifique erro de sintaxe.";
 
-        Problem problem = createProblemBuilder(status, problemType, detail).build();
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
+                .build();
 
         return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
     }
@@ -130,8 +148,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 path, e.getValue(), e.getTargetType().getSimpleName());
         ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
 
-        Problem problem = createProblemBuilder(status, problemType, detail).build();
-        ;
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
+                .build();
 
         return handleExceptionInternal(e, problem, headers, status, request);
     }
@@ -154,7 +173,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
 
-        Problem problem = createProblemBuilder(status, problemType, detail).build();
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
+                .build();
 
         return handleExceptionInternal(e, problem, headers, status, request);
     }
@@ -208,9 +229,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
                                                              HttpStatusCode statusCode, WebRequest request) {
         if (body == null) {
-            body = Problem.builder().title(statusCode.toString()).status(statusCode.value()).build();
+            body = Problem.builder().title(statusCode.toString())
+                    .status(statusCode.value())
+                    .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
+                    .build();
         } else if (body instanceof String) {
-            body = Problem.builder().title(statusCode.toString()).status(statusCode.value()).build();
+            body = Problem.builder().title(statusCode.toString())
+                    .status(statusCode.value())
+                    .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
+                    .build();
         }
 
         return super.handleExceptionInternal(ex, body, headers, statusCode, request);

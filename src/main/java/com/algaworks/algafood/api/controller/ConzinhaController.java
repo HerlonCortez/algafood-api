@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,7 +63,7 @@ public class ConzinhaController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void adicionar(@RequestBody Cozinha cozinha) {
+    public void adicionar(@RequestBody @Valid Cozinha cozinha) {
         cadastroCozinhaService.salvar(cozinha);
     }
 
@@ -78,7 +79,7 @@ public class ConzinhaController {
 //	}
 
     @PutMapping("/{cozinhaId}")
-    public Cozinha atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha) {
+    public Cozinha atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid Cozinha cozinha) {
         Cozinha cozinhaAtual = cadastroCozinhaService.buscar(cozinhaId);
 
         BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
