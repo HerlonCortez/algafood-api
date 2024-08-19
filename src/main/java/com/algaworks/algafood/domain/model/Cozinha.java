@@ -4,7 +4,7 @@ package com.algaworks.algafood.domain.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.algaworks.algafood.Groups;
+import com.algaworks.algafood.core.validation.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -40,7 +40,6 @@ public class Cozinha {
         this.nome = nome;
     }
 
-    @JsonIgnore
     @OneToMany(mappedBy = "cozinha")
     private List<Restaurante> restaurantes = new ArrayList<>();
 
