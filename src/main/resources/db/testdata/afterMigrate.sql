@@ -26,12 +26,12 @@ insert into cidade (id, nome, estado_id) values (3, 'São Paulo', 2) ON CONFLICT
 insert into cidade (id, nome, estado_id) values (4, 'Campinas', 2) ON CONFLICT (id) DO NOTHING;
 insert into cidade (id, nome, estado_id) values (5, 'Fortaleza', 3) ON CONFLICT (id) DO NOTHING;
 
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values (1, 'Thai Gourmet', 10, 1, now(), now(), 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro') ON CONFLICT (id) DO NOTHING;
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (2, 'Thai Delivery', 9.50, 1, now(), now()) ON CONFLICT (id) DO NOTHING;
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (3, 'Tuk Tuk Comida Indiana', 15, 2, now(), now()) ON CONFLICT (id) DO NOTHING;
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (4, 'Java Steakhouse', 12, 3, now(), now()) ON CONFLICT (id) DO NOTHING;
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (5, 'Lanchonete do Tio Sam', 11, 4, now(), now()) ON CONFLICT (id) DO NOTHING;
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (6, 'Bar da Maria', 6, 4, now(), now()) ON CONFLICT (id) DO NOTHING;
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values (1, 'Thai Gourmet', 10, 1, now() AT TIME ZONE 'UTC', now() AT TIME ZONE 'UTC', 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro') ON CONFLICT (id) DO NOTHING;
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (2, 'Thai Delivery', 9.50, 1, now() AT TIME ZONE 'UTC', now() AT TIME ZONE 'UTC') ON CONFLICT (id) DO NOTHING;
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (3, 'Tuk Tuk Comida Indiana', 15, 2, now() AT TIME ZONE 'UTC', now() AT TIME ZONE 'UTC') ON CONFLICT (id) DO NOTHING;
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (4, 'Java Steakhouse', 12, 3, now() AT TIME ZONE 'UTC', now() AT TIME ZONE 'UTC') ON CONFLICT (id) DO NOTHING;
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (5, 'Lanchonete do Tio Sam', 11, 4, now() AT TIME ZONE 'UTC', now() AT TIME ZONE 'UTC') ON CONFLICT (id) DO NOTHING;
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (6, 'Bar da Maria', 6, 4, now() AT TIME ZONE 'UTC', now() AT TIME ZONE 'UTC') ON CONFLICT (id) DO NOTHING;
 
 insert into forma_pagamento (id, descricao) values (1, 'Cartão de crédito') ON CONFLICT (id) DO NOTHING;
 insert into forma_pagamento (id, descricao) values (2, 'Cartão de débito') ON CONFLICT (id) DO NOTHING;
