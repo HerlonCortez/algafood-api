@@ -18,6 +18,11 @@ public class CadastroEstadoService {
     @Autowired
     private EstadoRepository estadoRepository;
 
+    public Estado buscar(@PathVariable Long estadoId) {
+        return estadoRepository.findById(estadoId).orElseThrow(
+                () -> new EstadoNaoEncontradoException(estadoId));
+    }
+    
     @Transactional
     public Estado salvar(Estado estado) {
         return estadoRepository.save(estado);
@@ -28,13 +33,9 @@ public class CadastroEstadoService {
         try {
             buscar(estadoId);
             estadoRepository.deleteById(estadoId);
+            estadoRepository.flush();
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format(MSG_ESTADO_EM_USO, estadoId));
         }
-    }
-
-    public Estado buscar(@PathVariable Long estadoId) {
-        return estadoRepository.findById(estadoId).orElseThrow(
-                () -> new EstadoNaoEncontradoException(estadoId));
     }
 }

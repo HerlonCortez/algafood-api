@@ -1,15 +1,15 @@
 truncate restaurante_forma_pagamento cascade;
-truncate produto cascade;
-truncate restaurante cascade;
-truncate forma_pagamento cascade;
-truncate cozinha cascade;
-truncate grupo_permissao cascade;
-truncate usuario_grupo cascade;
-truncate usuario cascade;
-truncate grupo cascade;
-truncate permissao cascade;
-truncate cidade cascade;
-truncate estado cascade;
+TRUNCATE produto RESTART IDENTITY CASCADE;
+TRUNCATE restaurante RESTART IDENTITY CASCADE;
+TRUNCATE forma_pagamento RESTART IDENTITY CASCADE;
+TRUNCATE cozinha RESTART IDENTITY CASCADE;
+TRUNCATE grupo_permissao RESTART IDENTITY CASCADE;
+TRUNCATE usuario_grupo RESTART IDENTITY CASCADE;
+TRUNCATE usuario RESTART IDENTITY CASCADE;
+TRUNCATE grupo RESTART IDENTITY CASCADE;
+TRUNCATE permissao RESTART IDENTITY CASCADE;
+TRUNCATE cidade RESTART IDENTITY CASCADE;
+TRUNCATE estado RESTART IDENTITY CASCADE;
 
 insert into cozinha (id, nome) values (1, 'Tailandesa') ON CONFLICT (id) DO NOTHING;
 insert into cozinha (id, nome) values (2, 'Indiana') ON CONFLICT (id) DO NOTHING;
@@ -56,6 +56,8 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('T-B
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Sanduíche X-Tudo', 'Sandubão com muito queijo, hamburger bovino, bacon, ovo, salada e maionese', 19, true, 5);
 
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, true, 6);
+
+insert into grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
 
 SELECT setval('public.cidade_id_seq', (SELECT MAX(id) FROM cidade));
 SELECT setval('public.cozinha_id_seq', (SELECT MAX(id) FROM cozinha));
