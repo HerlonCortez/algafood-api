@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +35,13 @@ public class CadastroGrupoService {
 			buscar(grupoId);
 			grupoRepository.deleteById(grupoId);
 			grupoRepository.flush();
+			
+		} catch (EmptyResultDataAccessException e) {
+			throw new GrupoNaoEncontradoException(grupoId);
+		
 		} catch (DataIntegrityViolationException e) {
-			throw new EntidadeEmUsoException(String.format(MSG_GRUPO_EM_USO, grupoId));
+			throw new EntidadeEmUsoException(
+				String.format(MSG_GRUPO_EM_USO, grupoId));
 		}
 	}
 }

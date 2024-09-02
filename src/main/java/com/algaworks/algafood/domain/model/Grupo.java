@@ -25,6 +25,6 @@ public class Grupo {
     private String nome;
     
     @ManyToMany
-    @JoinTable(name = "grupo_permissoes", joinColumns = @JoinColumn(name = "grupo_id"), inverseJoinColumns = @JoinColumn(name = "perimssao_id"))
+    @JoinTable(name = "grupo_permissao", joinColumns = @JoinColumn(name = "grupo_id"), inverseJoinColumns = @JoinColumn(name = "perimssao_id"))
     private List<Permissao> permissoes = new ArrayList<>();
 }

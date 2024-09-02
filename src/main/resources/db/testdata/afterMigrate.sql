@@ -59,6 +59,12 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Esp
 
 insert into grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
 
+insert into usuario (nome, email, senha, data_cadastro) values
+('João da Silva', 'joao.ger@algafood.com', '123', now() AT TIME ZONE 'UTC'),
+('Maria Joaquina', 'maria.vnd@algafood.com', '123', now() AT TIME ZONE 'UTC'),
+('José Souza', 'jose.aux@algafood.com', '123', now() AT TIME ZONE 'UTC'),
+('Sebastião Martins', 'sebastiao.cad@algafood.com', '123', now() AT TIME ZONE 'UTC');
+
 SELECT setval('public.cidade_id_seq', (SELECT MAX(id) FROM cidade));
 SELECT setval('public.cozinha_id_seq', (SELECT MAX(id) FROM cozinha));
 SELECT setval('public.estado_id_seq', (SELECT MAX(id) FROM estado));

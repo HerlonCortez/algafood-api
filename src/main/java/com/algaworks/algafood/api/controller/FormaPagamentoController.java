@@ -49,7 +49,7 @@ import jakarta.validation.Valid;
 		
 		@GetMapping("/{formaPagamentoId}")
 		public FormaPagamentoModel buscar(@PathVariable Long formaPagamentoId) {
-			FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+			FormaPagamento formaPagamento = cadastroFormaPagamento.buscar(formaPagamentoId);
 			
 			return formaPagamentoModelAssembler.toModel(formaPagamento);
 		}
@@ -67,7 +67,7 @@ import jakarta.validation.Valid;
 		@PutMapping("/{formaPagamentoId}")
 		public FormaPagamentoModel atualizar(@PathVariable Long formaPagamentoId,
 				@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
-			FormaPagamento formaPagamentoAtual = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+			FormaPagamento formaPagamentoAtual = cadastroFormaPagamento.buscar(formaPagamentoId);
 			
 			formaPagamentoInputDisassembler.copyToDomainObject(formaPagamentoInput, formaPagamentoAtual);
 			

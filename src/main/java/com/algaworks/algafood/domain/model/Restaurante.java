@@ -36,63 +36,69 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-@ValorZeroIncluiDescricao(valorField = "taxaFrete",
-        descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
+
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Restaurante {
 
-    @EqualsAndHashCode.Include
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@EqualsAndHashCode.Include
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @NotBlank
-    @Column(nullable = false)
-    private String nome;
+	@NotBlank
+	@Column(nullable = false)
+	private String nome;
 
-    @PositiveOrZero
-    //@TaxaFrete
-    //@Multiplo(numero = 5)
-    @Column(name = "taxa_frete")
-    private BigDecimal taxaFrete;
+	@PositiveOrZero
+	// @TaxaFrete
+	// @Multiplo(numero = 5)
+	@Column(name = "taxa_frete")
+	private BigDecimal taxaFrete;
 
-    private Boolean ativo = Boolean.TRUE;
-    
-    @Valid
-    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
-    @NotNull
-    @ManyToOne //(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cozinha_id", nullable = false)
-    private Cozinha cozinha;
+	private Boolean ativo = Boolean.TRUE;
 
-    @Embedded
-    private Endereco endereco;
+	@Valid
+	@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+	@NotNull
+	@ManyToOne // (fetch = FetchType.LAZY)
+	@JoinColumn(name = "cozinha_id", nullable = false)
+	private Cozinha cozinha;
 
-    @CreationTimestamp
-    @Column(nullable = false)
-    private OffsetDateTime dataCadastro;
+	@Embedded
+	private Endereco endereco;
 
-    @UpdateTimestamp
-    @Column(nullable = false)
-    private OffsetDateTime dataAtualizacao;
+	@CreationTimestamp
+	@Column(nullable = false)
+	private OffsetDateTime dataCadastro;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "restaurante_forma_pagamento",
-            joinColumns = @JoinColumn(name = "restaurante_id"),
-            inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
-    private List<FormaPagamento> formasPagamento = new ArrayList<>();
+	@UpdateTimestamp
+	@Column(nullable = false)
+	private OffsetDateTime dataAtualizacao;
 
-    @OneToMany(mappedBy = "restaurante")
-    private List<Produto> produtos = new ArrayList<>();
-    
-    public void ativar() {
-    	setAtivo(true);
-    }
-    
-    public void inativar() {
-    	setAtivo(false);
-    }
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "restaurante_forma_pagamento", joinColumns = @JoinColumn(name = "restaurante_id"), inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
+	private List<FormaPagamento> formasPagamento = new ArrayList<>();
+
+	@OneToMany(mappedBy = "restaurante")
+	private List<Produto> produtos = new ArrayList<>();
+
+	public void ativar() {
+		setAtivo(true);
+	}
+
+	public void inativar() {
+		setAtivo(false);
+	}
+
+	public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
+		return getFormasPagamento().remove(formaPagamento);
+	}
+
+	public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
+		return getFormasPagamento().add(formaPagamento);
+	}
 
 }
