@@ -1,7 +1,5 @@
 package com.algaworks.algafood.api.model;
 
-import com.algaworks.algafood.domain.model.Cidade;
-
 import lombok.Getter;
 import lombok.Setter;
 
