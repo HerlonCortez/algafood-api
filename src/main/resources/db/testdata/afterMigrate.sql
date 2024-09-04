@@ -1,4 +1,5 @@
 truncate restaurante_forma_pagamento cascade;
+truncate restaurante_usuario_responsavel cascade;
 TRUNCATE produto RESTART IDENTITY CASCADE;
 TRUNCATE restaurante RESTART IDENTITY CASCADE;
 TRUNCATE forma_pagamento RESTART IDENTITY CASCADE;
@@ -65,7 +66,12 @@ insert into usuario (nome, email, senha, data_cadastro) values
 ('João da Silva', 'joao.ger@algafood.com', '123', now() AT TIME ZONE 'UTC'),
 ('Maria Joaquina', 'maria.vnd@algafood.com', '123', now() AT TIME ZONE 'UTC'),
 ('José Souza', 'jose.aux@algafood.com', '123', now() AT TIME ZONE 'UTC'),
-('Sebastião Martins', 'sebastiao.cad@algafood.com', '123', now() AT TIME ZONE 'UTC');
+('Sebastião Martins', 'sebastiao.cad@algafood.com', '123', now() AT TIME ZONE 'UTC'),
+('Manoel Lima', 'manoel.loja@gmail.com', '123', now() AT TIME ZONE 'UTC');
+
+insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
+
+insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 5), (3, 5);
 
 SELECT setval('public.cidade_id_seq', (SELECT MAX(id) FROM cidade));
 SELECT setval('public.cozinha_id_seq', (SELECT MAX(id) FROM cozinha));

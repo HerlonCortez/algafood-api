@@ -1,26 +1,17 @@
 package com.algaworks.algafood.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import com.algaworks.algafood.core.validation.Groups;
-import com.algaworks.algafood.core.validation.Multiplo;
-import com.algaworks.algafood.core.validation.TaxaFrete;
-import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.groups.ConvertGroup;
-import jakarta.validation.groups.Default;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.algaworks.algafood.core.validation.Groups;
+import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -34,6 +25,12 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.groups.ConvertGroup;
+import jakarta.validation.groups.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -81,12 +78,18 @@ public class Restaurante {
 	private OffsetDateTime dataAtualizacao;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "restaurante_forma_pagamento", joinColumns = @JoinColumn(name = "restaurante_id"), inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
+	@JoinTable(name = "restaurante_forma_pagamento", joinColumns = @JoinColumn(name = "restaurante_id"), 
+	inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
 	private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>();
 
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "restaurante_usuario_responsavel", joinColumns = @JoinColumn(name = "restaurante_id"), 
+	inverseJoinColumns = @JoinColumn(name= "usuario_id"))
+	private Set<Usuario> usuarios = new HashSet<>();
+	
 	public void ativar() {
 		setAtivo(true);
 	}
@@ -111,4 +114,11 @@ public class Restaurante {
 		return getFormasPagamento().add(formaPagamento);
 	}
 
+	public void removeResponsanvel(Usuario usuario) {
+		getUsuarios().remove(usuario);
+	}
+	
+	public void adicionaResponsanvel(Usuario usuario) {
+		getUsuarios().add(usuario);
+	}
 }
