@@ -59,6 +59,8 @@ public class Restaurante {
 	private BigDecimal taxaFrete;
 
 	private Boolean ativo = Boolean.TRUE;
+	
+	private Boolean aberto = Boolean.TRUE;
 
 	@Valid
 	@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
@@ -91,6 +93,14 @@ public class Restaurante {
 
 	public void inativar() {
 		setAtivo(false);
+	}
+	
+	public void abrir() {
+		setAberto(true);
+	}
+	
+	public void fechar() {
+		setAberto(false);
 	}
 
 	public boolean removerFormaPagamento(FormaPagamento formaPagamento) {

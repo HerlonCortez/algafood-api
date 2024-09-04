@@ -1,0 +1,1 @@
+ALTER TABLE public.restaurante ADD aberto boolean NOT NULL DEFAULT true;
