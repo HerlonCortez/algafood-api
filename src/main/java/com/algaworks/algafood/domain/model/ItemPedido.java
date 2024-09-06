@@ -15,22 +15,33 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class ItemPedido {
 
-    @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    private Long id;
+	@EqualsAndHashCode.Include
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	private Long id;
 
-    private String descricao;
+	private Integer quantidade;
 
-    private int quantidate;
+	private BigDecimal precoUnitario;
 
-    private BigDecimal precoUnitario;
+	private BigDecimal precoTotal;
 
-    private BigDecimal precoTotal;
+	@ManyToOne
+	private Pedido pedido;
 
-    @ManyToOne
-    private Pedido pedido;
+	@ManyToOne
+	private Produto produto;
 
-    @ManyToOne
-    private Produto produto;
+	public void calcularPrecoTotal() {
+
+		if (this.precoUnitario == null) {
+			this.precoUnitario = BigDecimal.ZERO;
+		}
+		if (this.quantidade == null) {
+			this.quantidade = 0;
+		}
+		
+		this.setPrecoTotal(precoUnitario.multiply(new BigDecimal(quantidade)));
+	}
+
 }
