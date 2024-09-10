@@ -1,0 +1,1 @@
+ALTER TABLE public.pedido ADD codigo uuid NULL;

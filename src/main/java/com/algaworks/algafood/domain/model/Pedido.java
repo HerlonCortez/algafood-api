@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -21,6 +22,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -33,6 +35,8 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
+    
+    private UUID codigo;
 
     @CreationTimestamp
     private OffsetDateTime dataCriacao;
@@ -109,6 +113,11 @@ public class Pedido {
 		}
 		
 		this.status = novoStatus;
+	}
+	
+	@PrePersist
+	private void gerarCodigo() {
+		setCodigo(UUID.randomUUID());
 	}
 
 }

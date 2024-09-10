@@ -17,8 +17,8 @@ public class ModelMapperConfig {
 	@Bean
 	public ModelMapper modelMapper() {
 		var modelMapper = new ModelMapper();
-		modelMapper.createTypeMap(Restaurante.class, RestauranteModel.class)
-		.addMapping(Restaurante::getTaxaFrete, RestauranteModel::setPrecoFrete);
+//		modelMapper.createTypeMap(Restaurante.class, RestauranteModel.class)
+//		.addMapping(Restaurante::getTaxaFrete, RestauranteModel::setPrecoFrete);
 		
 		modelMapper.createTypeMap(ItemPedidoInput.class, ItemPedido.class)
 	    .addMappings(mapper -> mapper.skip(ItemPedido::setId)); 
