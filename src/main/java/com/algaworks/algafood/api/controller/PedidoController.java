@@ -21,7 +21,9 @@ import com.algaworks.algafood.api.model.input.PedidoInput;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
+import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
+import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 
 import jakarta.validation.Valid;
 
@@ -37,31 +39,31 @@ public class PedidoController {
 
 	@Autowired
 	private PedidoModelAssembler pedidoModelAssembler;
-	
+
 	@Autowired
 	private PedidoResumoModelAssembler pedidoResumoModelAssembler;
-	
+
 	@Autowired
 	private PedidoInputDisassembler pedidoInputDisassembler;
-	
+
 	@GetMapping
-	public List<PedidoResumoModel> listar(){
-		return pedidoResumoModelAssembler.toCollectionModel(pedidoRepository.findAll());
+	public List<PedidoResumoModel> pesquisar(PedidoFilter filtro) {
+		return pedidoResumoModelAssembler.toCollectionModel(pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro)));
 	}
-	
+
 	@GetMapping("/{pedidoId}")
 	public PedidoModel buscar(@PathVariable Long pedidoId) {
 		return pedidoModelAssembler.toModel(emissaoPedidoService.buscar(pedidoId));
 	}
-	
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public PedidoModel adicionar(@Valid @RequestBody PedidoInput pedidoInput) {
 		Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
-		
+
 		novoPedido.setCliente(new Usuario());
 		novoPedido.getCliente().setId(1L);
-		
+
 		return pedidoModelAssembler.toModel(emissaoPedidoService.emitir(novoPedido));
 	}
 }
