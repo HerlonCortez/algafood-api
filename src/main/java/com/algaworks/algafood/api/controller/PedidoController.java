@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,8 +53,8 @@ public class PedidoController {
 	}
 
 	@GetMapping("/{pedidoId}")
-	public PedidoModel buscar(@PathVariable Long pedidoId) {
-		return pedidoModelAssembler.toModel(emissaoPedidoService.buscar(pedidoId));
+	public PedidoModel buscar(@PathVariable UUID codigoPedido) {
+		return pedidoModelAssembler.toModel(emissaoPedidoService.buscar(codigoPedido));
 	}
 
 	@PostMapping

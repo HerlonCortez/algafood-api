@@ -1,5 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,9 +37,9 @@ public class EmissaoPedidoService {
 	@Autowired
 	private CadastroFormaPagamentoService cadastroFormaPagamentoService;
 	
-	public Pedido buscar(@PathVariable Long pedidoId) {
-		return pedidoRepository.findById(pedidoId)
-				.orElseThrow(() -> new PedidoNaoEncontradoException(pedidoId));
+	public Pedido buscar(UUID codigoPedido) {
+		return pedidoRepository.findByCodigo(codigoPedido)
+			.orElseThrow(() -> new PedidoNaoEncontradoException(codigoPedido.toString()));
 	}
 	
 	@Transactional

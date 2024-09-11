@@ -1,5 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,20 +21,20 @@ public class FluxoPedidoController {
 	
 	
 	@PutMapping("/confirmacao")
-	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void confirmar(@PathVariable Long pedidoId) {
-		fluxoPedidoService.confirmar(pedidoId);
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void confirmar(@PathVariable UUID codigoPedido) {
+		fluxoPedidoService.confirmar(codigoPedido);
 	}
 	
-	@PutMapping("/entregue")
-	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void entregar(@PathVariable Long pedidoId) {
-		fluxoPedidoService.entregar(pedidoId);
+	@PutMapping("/cancelamento")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void cancelar(@PathVariable UUID codigoPedido) {
+		fluxoPedidoService.cancelar(codigoPedido);
 	}
 	
-	@PutMapping("/cancelado")
-	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void cancelar(@PathVariable Long pedidoId) {
-		fluxoPedidoService.cancelar(pedidoId);
+	@PutMapping("/entrega")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void entregar(@PathVariable UUID codigoPedido) {
+		fluxoPedidoService.entregar(codigoPedido);
 	}
 }
