@@ -11,6 +11,7 @@ TRUNCATE grupo RESTART IDENTITY CASCADE;
 TRUNCATE permissao RESTART IDENTITY CASCADE;
 TRUNCATE cidade RESTART IDENTITY CASCADE;
 TRUNCATE estado RESTART IDENTITY CASCADE;
+TRUNCATE foto_produto CASCADE;
 
 insert into cozinha (id, nome) values (1, 'Tailandesa') ON CONFLICT (id) DO NOTHING;
 insert into cozinha (id, nome) values (2, 'Indiana') ON CONFLICT (id) DO NOTHING;
