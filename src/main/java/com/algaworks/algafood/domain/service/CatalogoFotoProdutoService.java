@@ -42,6 +42,7 @@ public class CatalogoFotoProdutoService {
 		
 		NovaFoto novaFoto = NovaFoto.builder()
 				.nomeArquivo(foto.getNomeArquivo())
+				.contentType(foto.getContentType())
 				.inputStream(dadosArquivo)
 				.build();
 		
@@ -58,6 +59,8 @@ public class CatalogoFotoProdutoService {
 	@Transactional
 	public void excluir(Long restautanteId, Long produtoId) {
 		FotoProduto fotoProduto = buscar(restautanteId, produtoId);
+		System.out.println(fotoProduto.getRestauranteId());
+		System.out.println(fotoProduto.getProduto().getId());
 		produtoRepository.delete(fotoProduto);
 		produtoRepository.flush();
 		
