@@ -63,8 +63,9 @@ public class PedidoController {
 		return new PageImpl<>(resumoModels, pageable, pagePedido.getTotalElements());
 	}
 
-	@GetMapping("/{pedidoId}")
+	@GetMapping("/{codigoPedido}")
 	public PedidoModel buscar(@PathVariable UUID codigoPedido) {
+		System.out.println("UUID - "+codigoPedido);
 		return pedidoModelAssembler.toModel(emissaoPedidoService.buscar(codigoPedido));
 	}
 

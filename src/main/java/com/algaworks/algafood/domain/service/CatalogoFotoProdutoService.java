@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.algaworks.algafood.domain.exception.FotoProdutoNaoEncontradaException;
 import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.repository.ProdutoRepository;
-import com.algaworks.algafood.domain.service.FotoStoregeService.NovaFoto;
+import com.algaworks.algafood.domain.service.FotoStorageService.NovaFoto;
 
 import jakarta.transaction.Transactional;
 
@@ -20,7 +20,7 @@ public class CatalogoFotoProdutoService {
 	private ProdutoRepository produtoRepository;
 
 	@Autowired
-	private FotoStoregeService fotoStoregeService;
+	private FotoStorageService fotoStoregeService;
 	
 	@Transactional
 	public FotoProduto salvar(FotoProduto foto, InputStream dadosArquivo) {

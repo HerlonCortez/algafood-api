@@ -1,5 +1,5 @@
-truncate restaurante_forma_pagamento cascade;
-truncate restaurante_usuario_responsavel cascade;
+TRUNCATE restaurante_forma_pagamento CASCADE;
+TRUNCATE restaurante_usuario_responsavel CASCADE;
 TRUNCATE produto RESTART IDENTITY CASCADE;
 TRUNCATE restaurante RESTART IDENTITY CASCADE;
 TRUNCATE forma_pagamento RESTART IDENTITY CASCADE;
@@ -12,6 +12,9 @@ TRUNCATE permissao RESTART IDENTITY CASCADE;
 TRUNCATE cidade RESTART IDENTITY CASCADE;
 TRUNCATE estado RESTART IDENTITY CASCADE;
 TRUNCATE foto_produto CASCADE;
+TRUNCATE pedido RESTART IDENTITY CASCADE;
+TRUNCATE item_pedido RESTART IDENTITY CASCADE;
+
 
 insert into cozinha (id, nome) values (1, 'Tailandesa') ON CONFLICT (id) DO NOTHING;
 insert into cozinha (id, nome) values (2, 'Indiana') ON CONFLICT (id) DO NOTHING;
@@ -68,7 +71,8 @@ insert into usuario (nome, email, senha, data_cadastro) values
 ('Maria Joaquina', 'maria.vnd@algafood.com', '123', now() AT TIME ZONE 'UTC'),
 ('José Souza', 'jose.aux@algafood.com', '123', now() AT TIME ZONE 'UTC'),
 ('Sebastião Martins', 'sebastiao.cad@algafood.com', '123', now() AT TIME ZONE 'UTC'),
-('Manoel Lima', 'manoel.loja@gmail.com', '123', now() AT TIME ZONE 'UTC');
+('Manoel Lima', 'manoel.loja@gmail.com', '123', now() AT TIME ZONE 'UTC'),
+('Hérlon Cortez', 'cortez.parente@gmail.com', '123', now() AT TIME ZONE 'UTC');
 
 insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
 
@@ -90,7 +94,7 @@ values (2, 1, 2, 2, 110, 220, 'Menos picante, por favor');
 insert into pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, 
         endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,
         status, data_criacao, sub_total, taxa_frete, valor_total)
-values (2, 'd178b637-a785-4768-a3cb-aa1ce5a8cdab', 4, 1, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro',
+values (2, 'd178b637-a785-4768-a3cb-aa1ce5a8cdab', 4, 6, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro',
 'CRIADO', now() AT TIME ZONE 'UTC', 79, 0, 79);
 
 insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
@@ -102,7 +106,7 @@ values (4, 1, 7, 2, 110, 220, 'Menos picante, por favor');
 insert into pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, 
                     endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,
 	                status, data_criacao, data_confirmacao, data_entrega, sub_total, taxa_frete, valor_total)
-values (3, 'b5741512-8fbc-47fa-9ac1-b530354fc0ff', 1, 1, 1, 1, '38400-222', 'Rua Natal', '200', null, 'Brasil',
+values (3, 'b5741512-8fbc-47fa-9ac1-b530354fc0ff', 1, 6, 1, 1, '38400-222', 'Rua Natal', '200', null, 'Brasil',
         'ENTREGUE', '2024-09-18 21:10:00', '2024-09-18 21:10:45', '2024-09-18 21:55:44', 110, 10, 120);
 
 insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)

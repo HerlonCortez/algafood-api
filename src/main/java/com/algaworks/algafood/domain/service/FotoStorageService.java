@@ -6,30 +6,45 @@ import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
 
-public interface FotoStoregeService {
+public interface FotoStorageService {
 
-	InputStream recuperar(String nomeArquivo);
-	
+	FotoRecuperada recuperar(String nomeArquivo);
+
 	void armazenar(NovaFoto novaFoto);
-	
+
 	void remover(String nomeArquivo);
-	
+
 	default void substituir(String nomeArquivoExistente, NovaFoto novaFoto) {
 		this.armazenar(novaFoto);
 		if (nomeArquivoExistente != null) {
 			this.remover(nomeArquivoExistente);
 		}
 	}
-	
+
 	default String gerarNome(String nome) {
-		return UUID.randomUUID() + "_"+ nome;
+		return UUID.randomUUID() + "_" + nome;
 	}
-	
+
 	@Builder
 	@Getter
-	class NovaFoto{
+	class NovaFoto {
 		private String nomeArquivo;
 		private String contentType;
 		private InputStream inputStream;
+	}
+
+	@Builder
+	@Getter
+	class FotoRecuperada {
+		private InputStream inputStream;
+		private String url;
+
+		public boolean temUrl() {
+			return url != null;
+		}
+
+		public boolean temInputStream() {
+			return inputStream != null;
+		}
 	}
 }
