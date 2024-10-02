@@ -25,8 +25,10 @@ public class FluxoPedidoService {
 		
 		var mensagem = Mensagem.builder()
 				.assunto(pedido.getRestaurante().getNome() + " - Pedido Confirmado")
-				.corpo("O pedido de código <strong>"+pedido.getCodigo() + "</strong> foi confirmado")
-				.destinatario(pedido.getCliente().getEmail()).build();
+				.corpo("pedido-confirmado.html")
+				.variavel("pedido", pedido)
+				.destinatario(pedido.getCliente().getEmail())
+				.build();
 			
 		envioEmailService.enviar(mensagem);
 	}
