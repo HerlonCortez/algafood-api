@@ -29,6 +29,7 @@ public class FluxoPedidoService {
 	public void cancelar(UUID codigoPedido) {
 		Pedido pedido = emissaoPedidoService.buscar(codigoPedido);
 		pedido.cancelar();
+		pedidoRepository.save(pedido);
 	}
 	
 	@Transactional

@@ -11,7 +11,7 @@ import com.algaworks.algafood.domain.service.EnvioEmailService;
 import com.algaworks.algafood.domain.service.EnvioEmailService.Mensagem;
 
 @Component
-public class NotificacaoCleintePedidoConfirmadoListener {
+public class NotificacaoCleintePedidoCanceladoListener {
 
 	@Autowired
 	private EnvioEmailService envioEmailService;
@@ -20,8 +20,8 @@ public class NotificacaoCleintePedidoConfirmadoListener {
 	public void aoConfirmarPedido(PedidoConfirmadoEvent event) {
 		Pedido pedido = event.getPedido();
 		var mensagem = Mensagem.builder()
-		.assunto(pedido.getRestaurante().getNome() + " - Pedido Confirmado")
-		.corpo("pedido-confirmado.html")
+		.assunto(pedido.getRestaurante().getNome() + " - Pedido Cancelado")
+		.corpo("pedido-cancelado.html")
 		.variavel("pedido", pedido)
 		.destinatario(pedido.getCliente().getEmail())
 		.build();
